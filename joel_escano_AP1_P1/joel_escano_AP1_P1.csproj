@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Pages\Consultas\" />
+    <Folder Include="Components\Pages\Registros\" />
     <Folder Include="Components\Pages\NewFolder\" />
+    <Folder Include="DAL\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
