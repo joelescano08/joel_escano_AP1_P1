@@ -12,6 +12,6 @@ namespace joel_escano_AP1_P1.DAL
 
         }
 
-        public DbSet<ViajesEspaciales> viajesEspaciales { get; set; }
+        public DbSet<ViajesEspaciales> ViajesEspaciales { get; set; }
     }
 }

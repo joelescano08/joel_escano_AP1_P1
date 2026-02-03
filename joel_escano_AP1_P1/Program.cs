@@ -1,7 +1,9 @@
 using joel_escano_AP1_P1.Components;
 using joel_escano_AP1_P1.DAL;
+using joel_escano_AP1_P1.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +14,13 @@ builder.Services.AddRazorComponents()
 
 var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
 
-builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlServer(ConStr);
+builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlServer(ConStr));
 
+
+builder.Services.AddScoped<ViajesEspacialesService>();
+
+
+builder.Services.AddBlazorBootstrap();
 
 
 
