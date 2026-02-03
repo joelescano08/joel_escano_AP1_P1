@@ -22,5 +22,6 @@ namespace joel_escano_AP1_P1.Models
 
         [Required(ErrorMessage = "Este campo es obligatorio")]
         public float Costo { get; set; }
+
     }
 }
