@@ -1,10 +1,21 @@
 using joel_escano_AP1_P1.Components;
+using joel_escano_AP1_P1.DAL;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+
+var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
+
+builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlServer(ConStr);
+
+
+
 
 var app = builder.Build();
 
