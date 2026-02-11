@@ -1,0 +1,127 @@
+﻿@inject CervezasService cervezasService
+@inject NavigationManager navigationManager
+
+
+@page "/Cervezas/Index"
+
+
+<PageTitle> Registro de Cervezas</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header">
+            <div class="card-title">Registro de Cervezas</div>
+            <a href="/Cervezas/Create" class="btn btn-primary"><span class="bi bi-plus-square-fill-nav-menu"></span>Crear</a>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <label class="card-text"><strong>Filtro</strong></label>
+                </div>
+                <div class="col-4">
+                    <label class="card-text"><strong>Busqueda</strong></label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <InputSelect @bind-Value="Filtro">
+                        <option value="" hidden selected disabled>Seleccione...</option>
+                        <option value="nombre">Nombre</option>
+                        <option value="marca">Marca</option>
+                        <option value="puntuacion">Puntuación</option>
+                    </InputSelect>
+                </div>
+
+                <div class="col-4">
+                    <InputText @bind-Value="ValorBusqueda"></InputText>
+                </div>
+
+
+                <div class="col-5">
+                    <button type="button" class="bi bi-search" @onclick="Buscar">Buscar</button>
+                </div>
+            </div>
+
+            <table class="table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Puntuacion</th>
+                    <th>Modificar</th>
+                </tr>
+
+                <tr>
+                    @foreach(Cervezas cerveza in ListaCervezas)
+                    {
+                        <td> @cerveza.IdCerveza</td>
+                        <td>@cerveza.Nombre</td>
+                        <td>@cerveza.Marca</td>
+                        <td>@cerveza.Puntuacion</td>
+                        <td>
+                            <a type="button" href="/Cervezas/Edit" class="btn btn-primary"></a>
+                        </td>
+                    }
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="card-footer">
+            <h1 class="card-text"> Total de Cervezas: @ListaCervezas.Count() </h1>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+@code {
+
+    public string Filtro { get; set; } = string.Empty;
+
+    public string ValorBusqueda { get; set; } = string.Empty;
+
+    public List<Cervezas> ListaCervezas { get; set; } = new List<Cervezas>();
+
+
+
+    public async Task Buscar()
+    {
+
+        if(Filtro != "")
+        {
+            if (Filtro == "nombre")
+            {
+                ListaCervezas = await cervezasService.Listar(c => c.Nombre.Contains(ValorBusqueda));
+                return;
+            }
+
+            if(Filtro == "marca")
+            {
+                ListaCervezas = await cervezasService.Listar(c => c.Marca.Contains(ValorBusqueda));
+
+            }
+
+            if(Filtro == "puntuacion")
+            {
+                ListaCervezas = await cervezasService.Listar(c => c.Marca.Equals(int.Parse(ValorBusqueda)));
+            }
+        }
+        else
+        {
+            ListaCervezas = await cervezasService.Listar(c => c.IdCerveza > 0);
+            return;
+        }
+
+    }
+
+}

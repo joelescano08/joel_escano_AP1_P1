@@ -55,7 +55,7 @@ namespace joel_escano_AP1_P1.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            return await contexto.Cervezas.AsNoTracking().ToListAsync();
+            return await contexto.Cervezas.AsNoTracking().Where(criterio).ToListAsync();
         }
 
 
