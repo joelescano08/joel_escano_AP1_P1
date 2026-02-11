@@ -12,6 +12,6 @@ namespace joel_escano_AP1_P1.DAL
 
         }
 
-        public DbSet<ViajesEspaciales> ViajesEspaciales { get; set; }
+        public DbSet<Cerveza> ViajesEspaciales { get; set; }
     }
 }

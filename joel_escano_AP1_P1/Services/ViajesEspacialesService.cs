@@ -10,7 +10,7 @@ namespace joel_escano_AP1_P1.Services
 
 
 
-        public async Task<bool> Guardar(ViajesEspaciales ViajesEspaciales)
+        public async Task<bool> Guardar(Cerveza ViajesEspaciales)
         {
             return true;
         }
@@ -19,7 +19,7 @@ namespace joel_escano_AP1_P1.Services
 
         public async Task<bool> Eliminar() {  return true; }
 
-        public async Task<List<ViajesEspaciales>> Listar(Expression<Func<ViajesEspaciales, bool >> criterio)
+        public async Task<List<Cerveza>> Listar(Expression<Func<Cerveza, bool >> criterio)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
