@@ -1,0 +1,51 @@
+﻿@inject NavigationManager navigationManager
+@inject CervezasService cervezasService
+@rendermode InteractiveServer
+
+@page "/Cervezas/Create"
+
+
+<div class="container">
+    <EditForm Model="cerveza" FormName="FormularioRegistroCerveza" OnSubmit="Guardar">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Creación de Cerveza</div>
+
+            </div>
+
+
+            <div class="card-body">
+               
+                <div class="mb-3">
+                    <InputText @bind-Value="cerveza.Nombre"></InputText>
+                </div>
+                <div class="mb-3">
+                    <InputText @bind-Value="cerveza.Marca"></InputText>
+                </div>
+                <div class="mb-3">
+                    <InputNumber @bind-Value="cerveza.Puntuacion"></InputNumber>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <a href="/Cervezas/Index" class="btn btn-danger"> <span class="bi bi-trash"></span>Volver</a>
+            </div>
+        </div>
+    </EditForm>
+
+</div>
+
+
+
+@code {
+    public Cervezas cerveza { get; set; } = new Cervezas();
+
+    public string mensaje { get; set; } = string.Empty;
+
+
+    public async Task Guardar()
+    {
+        
+    }
+}
