@@ -17,7 +17,7 @@ var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
 builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlServer(ConStr));
 
 
-builder.Services.AddScoped<ViajesEspacialesService>();
+builder.Services.AddScoped<CervezasService>();
 
 
 builder.Services.AddBlazorBootstrap();

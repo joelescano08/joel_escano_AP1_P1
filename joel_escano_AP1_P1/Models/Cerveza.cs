@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace joel_escano_AP1_P1.Models;
 
-public class Cerveza
+public class Cervezas
 {
     [Key]
     public int IdCerveza { get; set; }
