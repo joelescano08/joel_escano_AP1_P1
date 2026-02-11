@@ -22,7 +22,15 @@ namespace joel_escano_AP1_P1.Services
             contexto.Cervezas.Add(Cerveza);
 
             return await contexto.SaveChangesAsync() > 0;
+        }
 
+        public async Task<bool> Modificar(Cervezas Cerveza)
+        {
+            await using var contexto = await DbFactory.CreateDbContextAsync();
+
+            contexto.Cervezas.Update(Cerveza);
+
+            return await contexto.SaveChangesAsync() > 0;
 
         }
 
@@ -33,11 +41,12 @@ namespace joel_escano_AP1_P1.Services
         {
             if (!await Existe(Cerveza.IdCerveza))
             {
-                
+                return await Insertar(Cerveza);
+
             }
             else
             {
-
+                return await Modificar(Cerveza);
             }
             
         }
