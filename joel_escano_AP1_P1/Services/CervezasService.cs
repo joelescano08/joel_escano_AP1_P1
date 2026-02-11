@@ -51,22 +51,24 @@ namespace joel_escano_AP1_P1.Services
             
         }
 
-       
-
-
-
-
-
-
-
-
-        public async Task<List<Cervezas>> Listar(Expression<Func<Cervezas, bool >> criterio)
+        public async Task<List<Cervezas>> Listar(Expression<Func<Cervezas, bool>> criterio)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-
-            return await contexto.Cervezas.Where(criterio).AsNoTracking().ToListAsync();
-
+            return await contexto.Cervezas.AsNoTracking().ToListAsync();
         }
+
+
+        public async Task<bool> Eliminar(int Id)
+        {
+
+            await using var contexto = await DbFactory.CreateDbContextAsync();
+
+            await contexto.Cervezas.AsNoTracking().Where(c => c.IdCerveza == Id).ExecuteDeleteAsync();
+
+            return await contexto.SaveChangesAsync() > 0;
+        }
+
+
     }
 }
