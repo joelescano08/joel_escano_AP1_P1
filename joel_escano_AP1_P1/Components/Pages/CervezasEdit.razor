@@ -1,7 +1,7 @@
 ﻿@inject NavigationManager navigationManager
 @inject CervezasService cervezasService
 
-@page "/Cervezas/Edit{IdCerveza:int}"
+@page "/Cervezas/Edit/{IdCerveza:int}"
 
 
 <PageTitle>Modificar Cervezas</PageTitle>
@@ -33,8 +33,11 @@
             </div>
 
             <div class="card-footer justify-content-center">
-                <a href="/Cervezas/Index" class="btn btn-danger"> <span class="bi bi-trash"></span>Volver</a>
+
+                <a href="/Cervezas/Index" class="btn btn-secondary">Volver</a>
+                <button type="submit" class="btn btn-danger class=" bi bi-trash""><span class="bi bi-trash"></span>Eliminar</button>
                 <button type="submit" class="btn btn-primary">Modificar</button>
+                <h3> @mensaje</h3>
 
             </div>
         </div>
@@ -94,8 +97,6 @@
         }
 
     }
-
-
 
 
 }

@@ -57,12 +57,12 @@
                 <tr>
                     @foreach(Cervezas cerveza in ListaCervezas)
                     {
-                        <td> @cerveza.IdCerveza</td>
+                        <td>@cerveza.IdCerveza</td>
                         <td>@cerveza.Nombre</td>
                         <td>@cerveza.Marca</td>
                         <td>@cerveza.Puntuacion</td>
                         <td>
-                            <a type="button" href="/Cervezas/Edit/@cerveza.IdCerveza" class="btn btn-primary"></a>
+                            <a type="button" href="/Cervezas/Edit/@cerveza.IdCerveza" class="btn btn-primary"><span class="bi bi-search"></span>Modificar</a>
                         </td>
                     }
                 </tr>
@@ -71,7 +71,7 @@
         </div>
 
         <div class="card-footer">
-            <h1 class="card-text"> Total de Cervezas: @ListaCervezas.Count() </h1>
+            <h5 class="card-text"> Total de Cervezas: @ListaCervezas.Count() </h5>
         </div>
 
     </div>
