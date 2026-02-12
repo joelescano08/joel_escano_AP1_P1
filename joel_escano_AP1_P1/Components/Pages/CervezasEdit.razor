@@ -1,0 +1,101 @@
+﻿@inject NavigationManager navigationManager
+@inject CervezasService cervezasService
+
+@page "/Cervezas/Edit{IdCerveza:int}"
+
+
+<PageTitle>Modificar Cervezas</PageTitle>
+
+
+<div class="container">
+    <EditForm Model="cerveza" FormName="FormularioRegistroCerveza" OnValidSubmit="Guardar">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Creación de Cerveza</div>
+            </div>
+
+
+            <div class="card-body">
+               
+                <div class="m-3">
+                    <InputText class="form-control" @bind-Value="cerveza.Nombre"></InputText>
+                    <ValidationMessage For="(()=>cerveza.Nombre)"></ValidationMessage>
+                </div>
+                <div class="m-3">
+                    <InputText class="form-control" @bind-Value="cerveza.Marca"></InputText>
+                    <ValidationMessage For="(() => cerveza.Marca)"></ValidationMessage>
+                </div>
+                <div class="m-3">
+                    <InputNumber class="form-control" @bind-Value="cerveza.Puntuacion"></InputNumber>
+                    <ValidationMessage For="(() => cerveza.Puntuacion)"></ValidationMessage>
+                </div>
+
+            </div>
+
+            <div class="card-footer justify-content-center">
+                <a href="/Cervezas/Index" class="btn btn-danger"> <span class="bi bi-trash"></span>Volver</a>
+                <button type="submit" class="btn btn-primary">Modificar</button>
+
+            </div>
+        </div>
+    </EditForm>
+
+</div>
+
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public int IdCerveza { get; set; }
+
+    Cervezas cerveza { get; set; } = new Cervezas();
+    public string mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cerveza = await cervezasService.Buscar(IdCerveza);
+    }
+
+
+    public async Task Guardar()
+    {
+
+        var creado = cervezasService.Insertar(cerveza);
+
+        if (await creado)
+        {
+            mensaje = "Se ha creado con exito";
+            navigationManager.NavigateTo("/Cervezas/Index");
+        }
+        else
+        {
+            mensaje = "No se ha podido crear";
+            navigationManager.NavigateTo("/Cervezas/Index");
+        }
+
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = cervezasService.Eliminar(IdCerveza);
+
+        if (await eliminado)
+        {
+            mensaje = "Se ha eliminado correctamente";
+            navigationManager.NavigateTo("/Cervezas/Index");
+        }
+        else
+        {
+            mensaje = "No se ha podido eliminar";
+        }
+
+    }
+
+
+
+
+}

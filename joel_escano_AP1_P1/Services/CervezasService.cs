@@ -34,6 +34,13 @@ namespace joel_escano_AP1_P1.Services
 
         }
 
+        public async Task<Cervezas?> Buscar(int Id)
+        {
+            await using var contexto = await DbFactory.CreateDbContextAsync();
+
+            return await contexto.Cervezas.Where(c => c.IdCerveza == Id).FirstOrDefaultAsync();
+        }
+
 
 
 
@@ -55,7 +62,7 @@ namespace joel_escano_AP1_P1.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            return await contexto.Cervezas.AsNoTracking().Where(criterio).ToListAsync();
+            return await contexto.Cervezas.Where(criterio).ToListAsync();
         }
 
 

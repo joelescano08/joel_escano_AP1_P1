@@ -9,11 +9,11 @@ public class Cervezas
     public int IdCerveza { get; set; }
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
-    public string Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
 
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
-    public string Marca { get; set; }
+    public string Marca { get; set; } = string.Empty;
 
     [Required(ErrorMessage ="Este campo es obligatorio")]
     [Range(1,int.MaxValue, ErrorMessage ="El valor introducido tiene que ser mayor a 0")]

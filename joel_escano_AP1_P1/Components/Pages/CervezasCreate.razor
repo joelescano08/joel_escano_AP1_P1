@@ -3,33 +3,33 @@
 @rendermode InteractiveServer
 
 @page "/Cervezas/Create"
-
+<PageTitle>Creación de Cerveza</PageTitle>
 
 <div class="container">
     <EditForm Model="cerveza" FormName="FormularioRegistroCerveza" OnSubmit="Guardar">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">Creación de Cerveza</div>
-
             </div>
-
 
             <div class="card-body">
                
                 <div class="mb-3">
-                    <InputText @bind-Value="cerveza.Nombre"></InputText>
+                    <InputText class="form-control" @bind-Value="cerveza.Nombre"></InputText>
                 </div>
                 <div class="mb-3">
-                    <InputText @bind-Value="cerveza.Marca"></InputText>
+                    <InputText class="form-control" @bind-Value="cerveza.Marca"></InputText>
                 </div>
                 <div class="mb-3">
-                    <InputNumber @bind-Value="cerveza.Puntuacion"></InputNumber>
+                    <InputNumber class="form-control" @bind-Value="cerveza.Puntuacion"></InputNumber>
                 </div>
 
             </div>
 
             <div class="card-footer">
                 <a href="/Cervezas/Index" class="btn btn-danger"> <span class="bi bi-trash"></span>Volver</a>
+                <button type="submit" class="btn btn-primary"></button>
+                <h2> @mensaje</h2>
             </div>
         </div>
     </EditForm>
@@ -46,6 +46,17 @@
 
     public async Task Guardar()
     {
-        
+        var creado = cervezasService.Insertar(cerveza);
+
+        if(await creado)
+        {
+            mensaje = "Se ha creado exitosamente";
+            navigationManager.NavigateTo("/Cervezas/Index");
+        }
+        else
+        {
+            mensaje = "No se ha podido crear";
+        }
+
     }
 }

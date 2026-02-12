@@ -27,7 +27,7 @@
 
             <div class="row">
                 <div class="col-3">
-                    <InputSelect @bind-Value="Filtro">
+                    <InputSelect class="form-control" @bind-Value="Filtro">
                         <option value="" hidden selected disabled>Seleccione...</option>
                         <option value="nombre">Nombre</option>
                         <option value="marca">Marca</option>
@@ -36,12 +36,12 @@
                 </div>
 
                 <div class="col-4">
-                    <InputText @bind-Value="ValorBusqueda"></InputText>
+                    <InputText class="form-control" @bind-Value="ValorBusqueda"></InputText>
                 </div>
 
 
                 <div class="col-5">
-                    <button type="button" class="bi bi-search" @onclick="Buscar">Buscar</button>
+                    <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="bi bi-search"></span>Buscar</button>
                 </div>
             </div>
 
@@ -62,7 +62,7 @@
                         <td>@cerveza.Marca</td>
                         <td>@cerveza.Puntuacion</td>
                         <td>
-                            <a type="button" href="/Cervezas/Edit" class="btn btn-primary"></a>
+                            <a type="button" href="/Cervezas/Edit/@cerveza.IdCerveza" class="btn btn-primary"></a>
                         </td>
                     }
                 </tr>
@@ -93,6 +93,12 @@
 
     public List<Cervezas> ListaCervezas { get; set; } = new List<Cervezas>();
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaCervezas = ListaCervezas = await cervezasService.Listar(c => c.IdCerveza > 0);
+
+    }
 
 
     public async Task Buscar()
