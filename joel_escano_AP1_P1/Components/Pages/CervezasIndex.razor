@@ -50,20 +50,19 @@
 
             </div>
 
-            <QuickGrid Items="ListaCervezas.AsQueryable()" Pagination="paginationState" Class="table table-bordered table-hover">
-
+            <QuickGrid Items="ListaCervezas.AsQueryable()" Pagination="paginationState" Class="table table-striped">
                 <PropertyColumn Property="c => c.IdCerveza" Title="ID" Sortable="true" />
                 <PropertyColumn Property="c => c.Nombre" Title="Nombre" Sortable="true" />
                 <PropertyColumn Property="c => c.Marca" Title="Marca" Sortable="true" />
                 <PropertyColumn Property="c => c.Puntuacion" Title="Puntuación" Sortable="true" />
                 <PropertyColumn Property="c => c.Fecha" Title="Fecha" Sortable="true" />
 
-                <TemplateColumn Title="Acciones">
-                    <a class="btn btn-sm btn-warning me-2" href="/Cervezas/Edit/@context.IdCerveza">Editar</a>
-                    <button class="btn btn-sm btn-danger" @onclick="() => Eliminar(context.IdCerveza)"> Eliminar </button>
+                <TemplateColumn Title="Acciones" class="justify-content-center">
+                    <a class="btn btn-sm btn-primary me-2" href="/Cervezas/Edit/@context.IdCerveza"> Editar</a>
                 </TemplateColumn>
-
             </QuickGrid>
+
+            <div class="mt-3"> <Paginator State="paginationState" /></div>
 
         </div>
 
@@ -88,13 +87,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await CargarDatos();
-    }
-
-    private async Task CargarDatos()
-    {
         ListaCervezas = await cervezasService.Listar(c => c.IdCerveza > 0);
     }
+
+
 
     public async Task Buscar()
     {
@@ -116,11 +112,7 @@
         );
     }
 
-    private async Task Eliminar(int id)
-    {
-        var eliminado = await cervezasService.Eliminar(id);
 
-        if (eliminado)
-            await CargarDatos();
-    }
+
+    
 }

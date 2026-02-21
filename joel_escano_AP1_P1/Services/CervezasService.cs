@@ -28,10 +28,12 @@ namespace joel_escano_AP1_P1.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            contexto.Cervezas.Update(Cerveza);
+            var entity = await contexto.Cervezas.FirstOrDefaultAsync(c => c.IdCerveza == Cerveza.IdCerveza);
+            if (entity is null)
+                return false;
 
+            contexto.Entry(entity).CurrentValues.SetValues(Cerveza);
             return await contexto.SaveChangesAsync() > 0;
-
         }
 
         public async Task<Cervezas?> Buscar(int Id)
@@ -40,9 +42,6 @@ namespace joel_escano_AP1_P1.Services
 
             return await contexto.Cervezas.FirstOrDefaultAsync(c => c.IdCerveza == Id);
         }
-
-
-
 
         public async Task<bool> Guardar(Cervezas Cerveza)
         {
@@ -68,11 +67,16 @@ namespace joel_escano_AP1_P1.Services
 
         public async Task<bool> Eliminar(int Id)
         {
-
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            return await contexto.Cervezas.AsNoTracking().Where(c => c.IdCerveza == Id).ExecuteDeleteAsync() > 0;
+            var entidad = await contexto.Cervezas.FirstOrDefaultAsync(c => c.IdCerveza == Id);
+            if (entidad is null)
+            {
+                return false;
+            }
 
+            contexto.Cervezas.Remove(entidad);
+            return await contexto.SaveChangesAsync() > 0;
         }
 
 
