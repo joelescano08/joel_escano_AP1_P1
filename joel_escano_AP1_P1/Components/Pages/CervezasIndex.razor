@@ -35,38 +35,42 @@
                     </InputSelect>
                 </div>
 
-                <div class="col-4">
+                <div class="col-3">
                     <InputText class="form-control" @bind-Value="ValorBusqueda"></InputText>
                 </div>
 
 
-                <div class="col-5">
+                <div class="col-3">
                     <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="bi bi-search"></span>Buscar</button>
                 </div>
             </div>
 
-            <table class="table-hover">
-                <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Puntuacion</th>
-                    <th>Modificar</th>
-                </tr>
+            <table class="table-hover table">
 
-                <tr>
-                    @foreach(Cervezas cerveza in ListaCervezas)
-                    {
-                        <td>@cerveza.IdCerveza</td>
-                        <td>@cerveza.Nombre</td>
-                        <td>@cerveza.Marca</td>
-                        <td>@cerveza.Puntuacion</td>
-                        <td>
-                            <a type="button" href="/Cervezas/Edit/@cerveza.IdCerveza" class="btn btn-primary"><span class="bi bi-search"></span>Modificar</a>
-                        </td>
-                    }
-                </tr>
-
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Puntuacion</th>
+                        <th>Modificar</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                        @foreach (var cerveza in ListaCervezas)
+                        {
+                            <tr>
+                                <td>@cerveza.IdCerveza</td>
+                                <td>@cerveza.Nombre</td>
+                                <td>@cerveza.Marca</td>
+                                <td>@cerveza.Puntuacion</td>
+                                <td>
+                                    <a type="button" href="/Cervezas/Edit/@cerveza.IdCerveza" class="btn btn-primary"><span class="bi bi-search"></span>Modificar</a>
+                                </td>
+                           </tr>
+                        }
+                </tbody>
             </table>
         </div>
 
@@ -77,13 +81,6 @@
     </div>
 
 </div>
-
-
-
-
-
-
-
 
 @code {
 
