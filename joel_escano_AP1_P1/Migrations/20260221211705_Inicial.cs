@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -17,6 +18,7 @@ namespace joel_escano_AP1_P1.Migrations
                     IdCerveza = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Marca = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Puntuacion = table.Column<int>(type: "int", nullable: false)
                 },

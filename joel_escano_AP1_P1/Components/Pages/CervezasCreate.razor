@@ -15,13 +15,17 @@
             <div class="card-body">
                
                 <div class="mb-3">
-                    <InputText class="form-control" @bind-Value="cerveza.Nombre"></InputText>
+                    <InputText class="form-control" @bind-Value="cerveza.Marca" placeholder="Marca..." ></InputText>
                 </div>
                 <div class="mb-3">
-                    <InputText class="form-control" @bind-Value="cerveza.Marca"></InputText>
+                    <InputText class="form-control" @bind-Value="cerveza.Nombre" placeholder="Nombre.."></InputText>
                 </div>
                 <div class="mb-3">
-                    <InputNumber class="form-control" @bind-Value="cerveza.Puntuacion"></InputNumber>
+                    <InputNumber class="form-control" @bind-Value="cerveza.Puntuacion" placeholder="Puntuacion.."></InputNumber>
+                </div>
+                
+                <div class="mb-3">
+                    <InputDate class="form-control" @bind-Value="cerveza.Fecha" ></InputDate>
                 </div>
 
             </div>

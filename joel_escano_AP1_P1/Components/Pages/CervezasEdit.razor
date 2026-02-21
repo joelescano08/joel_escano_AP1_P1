@@ -1,5 +1,6 @@
 ﻿@inject NavigationManager navigationManager
 @inject CervezasService cervezasService
+@rendermode InteractiveServer
 
 @page "/Cervezas/Edit/{IdCerveza:int}"
 
@@ -8,7 +9,7 @@
 
 
 <div class="container">
-    <EditForm Model="cerveza" FormName="FormularioRegistroCerveza" OnValidSubmit="Guardar">
+    <EditForm Model="cerveza" FormName="FormularioRegistroCerveza" OnValidSubmit="Modificar">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">Creación de Cerveza</div>
@@ -17,25 +18,25 @@
 
             <div class="card-body">
                
-                <div class="m-3">
-                    <InputText class="form-control" @bind-Value="cerveza.Nombre"></InputText>
-                    <ValidationMessage For="(()=>cerveza.Nombre)"></ValidationMessage>
+                <div class="mb-3">
+                    <InputText class="form-control" @bind-Value="cerveza.Marca" placeholder="Marca..." ></InputText>
                 </div>
-                <div class="m-3">
-                    <InputText class="form-control" @bind-Value="cerveza.Marca"></InputText>
-                    <ValidationMessage For="(() => cerveza.Marca)"></ValidationMessage>
+                <div class="mb-3">
+                    <InputText class="form-control" @bind-Value="cerveza.Nombre" placeholder="Nombre.."></InputText>
                 </div>
-                <div class="m-3">
-                    <InputNumber class="form-control" @bind-Value="cerveza.Puntuacion"></InputNumber>
-                    <ValidationMessage For="(() => cerveza.Puntuacion)"></ValidationMessage>
+                <div class="mb-3">
+                    <InputNumber class="form-control" @bind-Value="cerveza.Puntuacion" placeholder="Puntuacion.."></InputNumber>
                 </div>
-
+                
+                <div class="mb-3">
+                    <InputDate class="form-control" @bind-Value="cerveza.Fecha" ></InputDate>
+                </div>
             </div>
 
             <div class="card-footer justify-content-center">
 
                 <a href="/Cervezas/Index" class="btn btn-secondary">Volver</a>
-                <button type="submit" class="btn btn-danger class=" bi bi-trash""><span class="bi bi-trash"></span>Eliminar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar"><span class="bi bi-trash"></span>Eliminar</button>
                 <button type="submit" class="btn btn-primary">Modificar</button>
                 <h3> @mensaje</h3>
 
@@ -44,10 +45,6 @@
     </EditForm>
 
 </div>
-
-
-
-
 
 
 @code {
@@ -60,18 +57,25 @@
 
     protected override async Task OnInitializedAsync()
     {
-        cerveza = await cervezasService.Buscar(IdCerveza);
+        var encontrada = await cervezasService.Buscar(IdCerveza);
+
+        if (encontrada is null)
+        {
+            mensaje = "No se encontró la cerveza";
+            return;
+        }
+
+        cerveza = encontrada;
     }
 
 
-    public async Task Guardar()
+    public async Task Modificar()
     {
+        var creado = await cervezasService.Modificar(cerveza);
 
-        var creado = cervezasService.Insertar(cerveza);
-
-        if (await creado)
+        if (creado)
         {
-            mensaje = "Se ha creado con exito";
+            mensaje = "Se ha modificado con exito";
             navigationManager.NavigateTo("/Cervezas/Index");
         }
         else
@@ -84,18 +88,18 @@
 
     public async Task Eliminar()
     {
-        var eliminado = cervezasService.Eliminar(IdCerveza);
-
-        if (await eliminado)
+        var eliminada = await cervezasService.Eliminar(cerveza.IdCerveza);
+        if (eliminada)
         {
-            mensaje = "Se ha eliminado correctamente";
+            mensaje = "Se ha podido eliminar con exito";
+            await Task.Delay(1000);
             navigationManager.NavigateTo("/Cervezas/Index");
         }
         else
         {
             mensaje = "No se ha podido eliminar";
+            await Task.Delay(1000);
         }
-
     }
 
 

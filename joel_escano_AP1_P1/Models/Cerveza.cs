@@ -11,6 +11,8 @@ public class Cervezas
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public string Nombre { get; set; } = string.Empty;
 
+    public DateTime Fecha { get; set; } = DateTime.Now;
+
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public string Marca { get; set; } = string.Empty;

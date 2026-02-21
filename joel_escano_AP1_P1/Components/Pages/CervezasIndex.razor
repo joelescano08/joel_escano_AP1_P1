@@ -1,134 +1,118 @@
 ﻿@inject CervezasService cervezasService
 @inject NavigationManager navigationManager
+@using Microsoft.AspNetCore.Components.QuickGrid
+
 @rendermode InteractiveServer
-
-
 @page "/Cervezas/Index"
 
-
-<PageTitle> Registro de Cervezas</PageTitle>
+<PageTitle>Registro de Cervezas</PageTitle>
 
 <div class="container">
     <div class="card shadow-lg">
-        <div class="card-header">
-            <div class="card-title">Registro de Cervezas</div>
-            <a href="/Cervezas/Create" class="btn btn-primary"><span class="bi bi-plus-square-fill-nav-menu"></span>Crear</a>
+
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title">Registro de Cervezas</h5>
+            <a href="/Cervezas/Create" class="btn btn-primary">
+                <span class="bi bi-plus-square-fill"></span> Crear
+            </a>
         </div>
 
         <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <label class="card-text"><strong>Filtro</strong></label>
-                </div>
-                <div class="col-4">
-                    <label class="card-text"><strong>Busqueda</strong></label>
-                </div>
-            </div>
 
-            <div class="row">
+            <div class="row mb-3">
+
                 <div class="col-3">
                     <InputSelect class="form-control" @bind-Value="Filtro">
-                        <option value="" hidden selected disabled>Seleccione...</option>
+                        <option value="">Seleccione...</option>
                         <option value="nombre">Nombre</option>
                         <option value="marca">Marca</option>
                         <option value="puntuacion">Puntuación</option>
                     </InputSelect>
                 </div>
 
-                <div class="col-4">
-                    <InputText class="form-control" @bind-Value="ValorBusqueda"></InputText>
+                <div class="col-3">
+                    <InputText class="form-control" @bind-Value="ValorBusqueda" />
                 </div>
 
-
-                <div class="col-5">
-                    <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="bi bi-search"></span>Buscar</button>
+                <div class="col-2">
+                    <InputDate class="form-control" @bind-Value="FechaDesde" />
                 </div>
+
+                <div class="col-2">
+                    <InputDate class="form-control" @bind-Value="FechaHasta" />
+                </div>
+
+                <div class="col-2">
+                    <button class="btn btn-primary w-100" @onclick="Buscar">
+                        <span class="bi bi-search"></span> Buscar
+                    </button>
+                </div>
+
             </div>
 
-            <table class="table-hover">
-                <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Puntuacion</th>
-                    <th>Modificar</th>
-                </tr>
+            <QuickGrid Items="ListaCervezas.AsQueryable()" Pagination="paginationState" Class="table table-striped">
+                <PropertyColumn Property="c => c.IdCerveza" Title="ID" Sortable="true" />
+                <PropertyColumn Property="c => c.Nombre" Title="Nombre" Sortable="true" />
+                <PropertyColumn Property="c => c.Marca" Title="Marca" Sortable="true" />
+                <PropertyColumn Property="c => c.Puntuacion" Title="Puntuación" Sortable="true" />
+                <PropertyColumn Property="c => c.Fecha" Title="Fecha" Sortable="true" />
 
-                <tr>
-                    @foreach(Cervezas cerveza in ListaCervezas)
-                    {
-                        <td>@cerveza.IdCerveza</td>
-                        <td>@cerveza.Nombre</td>
-                        <td>@cerveza.Marca</td>
-                        <td>@cerveza.Puntuacion</td>
-                        <td>
-                            <a type="button" href="/Cervezas/Edit/@cerveza.IdCerveza" class="btn btn-primary"><span class="bi bi-search"></span>Modificar</a>
-                        </td>
-                    }
-                </tr>
+                <TemplateColumn Title="Acciones" class="justify-content-center">
+                    <a class="btn btn-sm btn-primary me-2" href="/Cervezas/Edit/@context.IdCerveza"> Editar</a>
+                </TemplateColumn>
+            </QuickGrid>
 
-            </table>
+            <div class="mt-3"> <Paginator State="paginationState" /></div>
+
         </div>
 
         <div class="card-footer">
-            <h5 class="card-text"> Total de Cervezas: @ListaCervezas.Count() </h5>
+            <h6>Total de Cervezas: @ListaCervezas.Count</h6>
         </div>
 
     </div>
-
 </div>
-
-
-
-
-
-
-
 
 @code {
 
     public string Filtro { get; set; } = string.Empty;
-
     public string ValorBusqueda { get; set; } = string.Empty;
 
-    public List<Cervezas> ListaCervezas { get; set; } = new List<Cervezas>();
+    public DateTime? FechaDesde { get; set; }
+    public DateTime? FechaHasta { get; set; }
 
+    public List<Cervezas> ListaCervezas { get; set; } = new();
+
+    PaginationState paginationState = new() { ItemsPerPage = 10 };
 
     protected override async Task OnInitializedAsync()
     {
-        ListaCervezas = ListaCervezas = await cervezasService.Listar(c => c.IdCerveza > 0);
-
+        ListaCervezas = await cervezasService.Listar(c => c.IdCerveza > 0);
     }
+
 
 
     public async Task Buscar()
     {
+        ListaCervezas = await cervezasService.Listar(c =>
+            (string.IsNullOrEmpty(Filtro) ||
 
-        if(Filtro != "")
-        {
-            if (Filtro == "nombre")
-            {
-                ListaCervezas = await cervezasService.Listar(c => c.Nombre.Contains(ValorBusqueda));
-                return;
-            }
+            (Filtro == "nombre" && c.Nombre.Contains(ValorBusqueda)) ||
 
-            if(Filtro == "marca")
-            {
-                ListaCervezas = await cervezasService.Listar(c => c.Marca.Contains(ValorBusqueda));
+            (Filtro == "marca" && c.Marca.Contains(ValorBusqueda)) ||
 
-            }
+            (Filtro == "puntuacion" && c.Puntuacion == int.Parse(ValorBusqueda)))
 
-            if(Filtro == "puntuacion")
-            {
-                ListaCervezas = await cervezasService.Listar(c => c.Marca.Equals(int.Parse(ValorBusqueda)));
-            }
-        }
-        else
-        {
-            ListaCervezas = await cervezasService.Listar(c => c.IdCerveza > 0);
-            return;
-        }
+            &&
 
+            (!FechaDesde.HasValue || c.Fecha.Date >= FechaDesde.Value.Date)
+            &&
+
+            (!FechaHasta.HasValue || c.Fecha.Date <= FechaHasta.Value.Date)
+        );
     }
 
+
+
+    
 }
