@@ -8,10 +8,10 @@ namespace joel_escano_AP1_P1.Services
     public class CervezasService(IDbContextFactory<Contexto> DbFactory)
     {
 
-        public async Task<bool> Existe(int ViajesId) {
+        public async Task<bool> Existe(int Id) {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            return await contexto.Cervezas.AnyAsync(c => c.IdCerveza == 0);
+            return await contexto.Cervezas.AnyAsync(c => c.IdCerveza == Id);
         }
 
 
@@ -38,7 +38,7 @@ namespace joel_escano_AP1_P1.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            return await contexto.Cervezas.Where(c => c.IdCerveza == Id).FirstOrDefaultAsync();
+            return await contexto.Cervezas.FirstOrDefaultAsync(c => c.IdCerveza == Id);
         }
 
 
@@ -62,7 +62,7 @@ namespace joel_escano_AP1_P1.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            return await contexto.Cervezas.Where(criterio).ToListAsync();
+            return await contexto.Cervezas.Where(criterio).AsNoTracking().ToListAsync();
         }
 
 
@@ -71,9 +71,8 @@ namespace joel_escano_AP1_P1.Services
 
             await using var contexto = await DbFactory.CreateDbContextAsync();
 
-            await contexto.Cervezas.AsNoTracking().Where(c => c.IdCerveza == Id).ExecuteDeleteAsync();
+            return await contexto.Cervezas.AsNoTracking().Where(c => c.IdCerveza == Id).ExecuteDeleteAsync() > 0;
 
-            return await contexto.SaveChangesAsync() > 0;
         }
 
 
